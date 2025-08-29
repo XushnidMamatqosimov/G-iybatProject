@@ -109,6 +109,7 @@ public class ProfileService {
         // update username
         profileRepository.updateUsername(currentUserId, tempUsername);
         //response
+
         List<ProfileRole> roleList = profileRoleRepository.getAllRolesListByProfileId(currentUserId);
         String jwt = JwtUtil.encode(tempUsername, currentProfile.getId(), roleList);
         return new AppResponse<>(jwt, resourceBundleService.getMessage("change.username.success", language));
