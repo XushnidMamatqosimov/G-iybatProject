@@ -1,0 +1,181 @@
+********************* G‘iybat.uz ********************* -----
+        G‘iybat.uz saytida quyidagi talablar bajarilishi kerak:
+1. Foydalanuvchilar website-ga kirgan payt g‘iybatlarni (postlarni) ro‘yxatini ko‘rishi kerak.
+   Oxirgi joylangan g‘iybatlar birinchi ko‘rinishi kerak. Shuningdek ularni qidirish funksionali bo‘lsin.
+   Barcha g‘iybatlarni ko‘rish uchun pagination-dan (sahifalashdan) foydalansin.
+
+   Bitta g‘iybatni  ustiga bosilsa uni alohida sahifada  ko'rish imkoni bo'lsin.
+   Unda Rasm va to'liq matni, kim yaratganligi va qachon yaratilganliklari bilan ko'rsatilsin.
+
+   Login bo'lib kirgan foydalanuvchilar yangi g'iybatlarni yarata oladi.
+
+2. Foydalanuvchilar ro‘yxatdan o'tishi va oldin ro‘yxatdan o'tgan foydalanuvchilar
+    tizimga login bo'lib kira olishi kerak.
+
+    Ro‘yxatdan o'tganda Isim, Email/Phone va Parol ma'lumotlarni kiritishi kerak.
+    Telefon raqam bilan ro‘yxatdan o'tish imkoni ham bo'lsin (Isim, PhoneNumber, Parol).
+    Ro‘yxatdan o'tishda Email yoki Phone ni tasdiqlashi kerak.
+
+    Login qilishda Email/Phone va Password orqali bo'ladi.
+    Parolni unutdingizni (parolni qayta tiklash) funksionali bo'lsin.
+
+3. G'ybat yaratish. Yangi g'iybat yaratish uchun uning rasmini va kontentini ko'rish kerak bo'ladi.
+   Kontentning uzunligi kamida 100ta harfdan ortiq bo'lishi kerak.
+
+   Foydalanuvchi o'zining g'iybatlarini ko'rishi ularni o'zgartirishi
+   yoki ularni o'chirish imkoniga ega bo'lishi kerak.
+
+4. Foydalanuvchi o'zining ma'lumotlarini o'zgartira olishi imkoni bo'lishi kerak.
+    Unda o'zining ismini, email/phone ni o'zgartira olish imkoni bo'lsin.
+    Email yoki Phone ni o'zgartirganda uni tasdiqlashi ham kerak.
+
+5. Adminlar tizimdagi barcha G'iybatlarni ko'ra bilishi va ularni o'chirish
+    imkoniga ega bo'lishi kerak.
+
+6. Adminlar tizimdagi barcha foydalanuvchilarni ro‘yxatini ko'ra bilishi kerak.
+    Ularni ma'lumotlarini ko'rishi va ularni bloklash imkoni bo'lishi kerak.
+
+    Block-langan foydalanuvchi tizimga login bo'lib kira olmaydi.
+
+----- Used Technology and Frameworks
+1. Spring Boot
+2. Spring Security + Bcrypt Algorithm
+3. Spring Data JPA + Hibernate + PostgresSQL
+4. Flyway
+5. Logging
+6. Internationalization (multi language)
+7. Swagger
+8. Property files
+9. Maven
+10. For Registration use Email va SMS sending. (Reset Password)
+11. Css, Html, Bootstrap, JavaScript, AJAX
+12.
+
+
+----- Integration
+1. Email sending
+2. Sms provider integration
+
+----- Asosiy maqsad
+. 0-dan o'zimiz loyixa ko'tarish
+. Bir nechta texnalogiyalarni birga konfiguratsiya qilib ishlatish.
+. Loyihani qurish
+. Frontend ishlash prinsipi
+. USER/ADMIN rollar bilan ishlash
+. Ma'lumotlar bazasini arxitekturasini qurish
+. Registration/Login/Reset password logikalarini yozish
+
+----- API-lar
+1. Auth.
+    1. Registration. Ro'yxatdan o'tish;
+            Request:  { name, username, password}
+            Response: OK status
+    2. Registration Confirm. Email yoki Phone ni tastiqlash; (agar emil orqali confirm uchun alohida, phone orqali confrm qilish uchun alohida api bo'lishi kerak)
+            Request: logikadan kelib chiqgan holda.
+            Response: {name,username,roleList, jwt, photo{id,url}}
+    3. Registration Verification Resend. Ro'yxatdan o'tishni tastiqlash kodini qayta jonatish. (SMS kelmay qolgan holatda ishlatiladi)
+                Request:  { name, username, password}
+                Response: OK status
+    3. Authorization (Login)
+            Request: {username, password}       // username bu yoki phone yoki email.
+            Response: {name,username,roleList, jwt, photo{id,url}}
+    4. ResetPassword (Passwordni qayta tiklash)
+            Request: {username}    // username bu yoki phone yoki email.
+            Response: logikadan kelib chiqgan holda.
+    5. ResetPasswordConfirm (Passwordni qayta tiklashni tastiqlash)
+            Request: {username, confirmCode, password}    // password - new password
+            Response: logikadan kelib chiqgan holda.
+
+2. Attach
+    1. Image upload api (USER,ADMIN) (Attach-ni jo'natish/yuklash)
+    2. Open Image api (ANY) (Attach-ni ochish/ko'rish)
+
+3. Post - G'iybat.
+    1. Create. G'iybat yaratish (USER)
+            Request: {title, content, photo{id}}
+            Response: {id, title, content, photo{id,url}, createdDate}
+    2. Profile post list (USER, ADMIN)   (murojat qilgan profile-ning yaratgan postlarini return qiladi)
+                (with pagination/paginatsiya bilan birga qilish kerak)
+            Request:
+                Param:  page,size (url param da keladi)
+            Response: [
+                        {id, title, content, photo{id,url}, createdDate},
+                        ...
+                      ]
+    3. Post by id  (USER, ADMIN)   (id bo'yicha post-ni return qiladi)
+            Request:
+                PathVariable:  id ( url-da keladi.)
+            Response: {id, title, content, photo{id,url}, createdDate}
+    4. Update by id. (USER)
+            Request:
+                Param: id
+                Body : {title, content, photo{id}}
+            Response: {id, title, content, photo{id,url}, createdDate}
+    5. Delete by id. (USER, ADMIN) (USER faqat o'ziga tegishli postni delete qila oladi, ADMIN hohlagan postni delete qila oladi)
+            Request:
+                Param: id
+            Response: status OK
+    4. Delete by id. (USER - only post owner, ADMIN)
+            Request:
+                Param: id
+            Response: status OK
+    5. Public Filter. (search + pagination) (ANY)
+            Request:
+                Param: page, size
+                Body: {query}
+            Response: [
+                        {id, title, content (first 150 char), photo{id, url}, createdDate, profile (id, name,photoUrl)},
+                      ]
+   5. Similar Post List. (Berilgan Post-dan tashqari o'xshash postlarni 3tasini return qiladi) (ANY)
+            Request:
+                Param: page, size
+                Body: {query}
+            Response: [
+                      {id, title, content (first 150 char), photo{id, url}, createdDate, profile (id, name,photoUrl)},
+                     ]
+    7.  Filter. (search + pagination) (ADMIN)
+           Request:
+                Param: page, size
+                Body: {query}
+           Response: [
+                      {id, title, content (first 150 char), photo{id, url}, createdDate, profile (id, name,photoUrl)},
+                     ]
+3. Profile
+    1. Get Detail. (Murojaat qilgan profile-ni ma'lumotlarini return qiladi.) (USER,ADMIN)
+            Response: {name,username,roleList, photo{id,url}}
+    2. Update Detail. (Murojaat qilgan profile-ni ma'lumotlarini o'zgartirish.) (USER,ADMIN)
+            Request: {name}
+            Response: Message
+    3. Update Photo.   (USER,ADMIN)
+            Request: {photoId}
+            Response: MessageResponse
+    4. Update Password.   (USER,ADMIN) (murojat qilgan odamni profilini o'zgartirish.)
+            Request: {currentPswd, currentPswd}
+            Response: MessageResponse
+    5. Update username (phone yoki email-ni update qilish)  (Murojaat qilgan profile-ni username-ni o'zgartirish.) (USER,ADMIN) (USER,ADMIN)
+            Request: {username}
+            Response: MessageResponse
+    6. Update username confirm (phone yoki email-ni update qilish)  (Murojaat qilgan profile-ni username-ni o'zgartirish.) (USER,ADMIN) (USER,ADMIN)
+            Request: {code}
+            Response: MessageResponse
+    7. Filter with Pagination. (Profile-larni list-nini return qiladi) (ADMIN)
+            Request:
+                Param: page, size
+                Body: {query}
+            Response: [
+                        {id, name, username, photo{id,url}, postCount}
+                      ]
+    8. Updating Profile Status: (ADMIN)
+            Request:
+                Param: id
+            Response: Status OK
+    9. Delete Profile : (ADMIN)
+            Request:
+               Param: id
+            Response: Status OK
+
+
+----- Recourses
+1. Figma: https://www.figma.com/design/ZrhmVGpDPKB0anzoZfs85x/Gi'ybat.uz
+2. Frontend (verstka): https://github.com/codeuzbek/giybat-frontend-verstka
+3. Backend talablar: https://github.com/codeuzbek/giybat-talablar

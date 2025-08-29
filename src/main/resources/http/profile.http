@@ -1,0 +1,18 @@
+### Update profile detail
+PUT localhost:8080/profile/detail
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpZCI6Ijk4IiwiaWF0IjoxNzU2MTIxNjA2LCJleHAiOjE3NTYyMDgwMDZ9.utas_RZ215xvQrG3pJSJHCIIs2W1s3egU7gfSjE4K5AMg51y_QQ3M8Pmg_Dma8BNAzwsBu-Nvq18_uWFTi_FRw
+
+{
+  "name": "XushnidJon"
+}
+
+### Update password
+PUT localhost:8080/profile/pswdUpdate
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpZCI6Ijk4IiwiaWF0IjoxNzU2MTIxNjA2LCJleHAiOjE3NTYyMDgwMDZ9.utas_RZ215xvQrG3pJSJHCIIs2W1s3egU7gfSjE4K5AMg51y_QQ3M8Pmg_Dma8BNAzwsBu-Nvq18_uWFTi_FRw
+
+{
+  "oldPassword": "12345",
+  "newPassword": "54321"
+}

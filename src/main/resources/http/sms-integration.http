@@ -1,0 +1,28 @@
+### Eskiz Login
+POST https://notify.eskiz.uz/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "xushnidmamatqosimov10@gmail.com",
+  "password": "18mSHHhL4kphjOXyQvJr50xfGNVfKmxCNHK4TuDW"
+}
+
+### Eskiz SMS Send
+POST https://notify.eskiz.uz/api/message/sms/send
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTY5ODY5NDksImlhdCI6MTc1NDM5NDk0OSwicm9sZSI6InRlc3QiLCJzaWduIjoiYWM4OGJiNWNjMjRiZTU5N2JiOTllMzc1NjU2MmQ4MTEwYTFhM2RkODg2ZTYyOTJlODFlZjk3YjRiNDIzMWViYSIsInN1YiI6IjEyMDE5In0.TNZu4ZW-DrowSSZjBwnhXBt_8eNre-Qo6lya3rIElKw
+
+{
+  "mobile_phone": "998997018900",
+  "message": "Bu Eskiz dan test",
+  "from": "4546"
+}
+
+### SMS Verification Resened-Sms
+POST localhost:8080/auth/registration/sms-verification-resend
+Content-Type: application/json
+
+{
+  "phone": "998915930412"
+}
+

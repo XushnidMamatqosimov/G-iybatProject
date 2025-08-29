@@ -1,0 +1,74 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### create profile/ registration
+POST localhost:8080/auth/registration
+Content-Type: application/json
+Accept-Language: RU
+
+{
+  "name": "XUSHNIDIIYYY",
+  "username": "xmamatqosimov@gmail.com",
+  "password": "12345"
+}
+
+### Registration Sms verification
+POST localhost:8080/auth/registration/sms-verification
+Content-Type: application/json
+
+{
+  "phone": "998995546253",
+  "code": "28312"
+}
+
+### Reset Password
+POST localhost:8080/auth/reset-password
+Content-Type: application/json
+
+{
+  "username": "xmamatqosimov@gmail.com"
+}
+
+### Reset Password Confirm
+POST localhost:8080/auth/reset-password-confirm
+Content-Type: application/json
+
+{
+  "username": "xmamatqosimov@gmail.com",
+  "confirmCode": "55679",
+  "password": "321321"
+}
+
+### Update Username
+PUT localhost:8080/profile/username
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92MjJAZ21haWwuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlkIjoiOTkiLCJpYXQiOjE3NTYzODE1MzMsImV4cCI6MTc1NjQ2NzkzM30._ay3cRZaKcGcZyRYmOF1NW4aDIlFKKQ_FWrZ11igRzKiG-_NQPZm73m0TC7Qr8Cts4SzbSTiJBTfNACqC-cLAw
+
+{
+  "username": "xmamatqosimov@gmail.com"
+}
+
+### Update Username Confirm
+PUT localhost:8080/profile/username/confirm
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92MjJAZ21haWwuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlkIjoiOTkiLCJpYXQiOjE3NTYzODE1MzMsImV4cCI6MTc1NjQ2NzkzM30._ay3cRZaKcGcZyRYmOF1NW4aDIlFKKQ_FWrZ11igRzKiG-_NQPZm73m0TC7Qr8Cts4SzbSTiJBTfNACqC-cLAw
+
+{
+  "code": "47757"
+}
+
+
+### activation link
+GET http://localhost:8080/auth/registration/verification/88
+//Accept-Language: UZ
+
+### login
+POST localhost:8080/auth/login
+Content-Type: application/json
+Accept-Language: UZ
+
+{
+  "username": "xmamatqosimov@gmail.com",
+  "password": "54321"
+}
