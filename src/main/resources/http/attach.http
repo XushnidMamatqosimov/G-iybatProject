@@ -1,0 +1,12 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### upload attach
+http://localhost:8080/attch/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename=rasm.jpg"
+
+</Users/xushnid/Documents/Java/Prog/OOP/Module/Module_5/rasm.jpg
