@@ -43,6 +43,8 @@ public class ProfileService {
     private EmailHistoryService emailHistoryService;
     @Autowired
     private ProfileRoleRepository profileRoleRepository;
+    @Autowired
+    private AttachService attachService;
 
 
     public AppResponse<String> updateDetail(ProfileDetailUpdateDTO dto, AppLanguages language) {
@@ -113,5 +115,15 @@ public class ProfileService {
         List<ProfileRole> roleList = profileRoleRepository.getAllRolesListByProfileId(currentUserId);
         String jwt = JwtUtil.encode(tempUsername, currentProfile.getId(), roleList);
         return new AppResponse<>(jwt, resourceBundleService.getMessage("change.username.success", language));
+    }
+
+    public AppResponse<String> updatePhoto( @Valid String photoId, AppLanguages language) {
+        Integer currentUserId = SpringSecurityUtil.getCurrentUserId();
+        ProfileEntity currentProfile = findById(currentUserId);
+        profileRepository.updatePhoto(currentProfile.getId(), photoId);
+        if (currentProfile.getPhotoId() != null && !currentProfile.getPhotoId().equals(photoId)) {
+            attachService.delete(currentProfile.getPhotoId());
+        }
+        return new AppResponse<>(resourceBundleService.getMessage("photo.update.success", language));
     }
 }

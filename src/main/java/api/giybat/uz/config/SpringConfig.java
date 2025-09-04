@@ -27,7 +27,8 @@ public class SpringConfig {
 
     public static final String[]   AUTH_WHITELIST = {
             "/v2/api-docs",
-            "/auth/**"
+            "/auth/**",
+            "/attach/open/**"
     };
 
     @Bean
@@ -43,6 +44,7 @@ public class SpringConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeRequests -> {
             authorizeRequests
+                    .requestMatchers("attach/open/**").permitAll()
                     .requestMatchers(AUTH_WHITELIST).permitAll()
                     .anyRequest()
                     .authenticated();

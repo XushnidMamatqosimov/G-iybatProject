@@ -2,6 +2,7 @@ package api.giybat.uz.controller;
 
 import api.giybat.uz.dto.AppResponse;
 import api.giybat.uz.dto.PasswordUpdateDTO;
+import api.giybat.uz.dto.ProfilePhotoUpdateDTO;
 import api.giybat.uz.dto.profile.ProfileDetailUpdateDTO;
 import api.giybat.uz.dto.profile.ProfileUpdateUsernameDTO;
 import api.giybat.uz.dto.profile.ProfileUsernameConfirmDTO;
@@ -47,6 +48,14 @@ public class ProfileController {
                                                               @RequestHeader(value = "Accept-Language", defaultValue = "UZ") AppLanguages language) throws JsonProcessingException {
         AppResponse<String> stringAppResponse = profileService.updateUsernameConfirm(dto, language);
         return ResponseEntity.ok(stringAppResponse);
+
+    }
+
+    @PutMapping("/photo")
+    public ResponseEntity<AppResponse<String>> update(@Valid @RequestBody ProfilePhotoUpdateDTO dto,
+                                                      @RequestHeader (value = "Accep-Language", defaultValue = "UZ") AppLanguages language) throws JsonProcessingException {
+        AppResponse<String> response = profileService.updatePhoto(dto.getPhotoId(), language);
+        return ResponseEntity.ok(response);
 
     }
 }

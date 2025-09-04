@@ -3,10 +3,20 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ### upload attach
-http://localhost:8080/attch/upload
+POST http://localhost:8080/attach/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpZCI6IjEwNyIsImlhdCI6MTc1Njg2MzExNiwiZXhwIjoxNzU2OTQ5NTE2fQ.IcuRXz_3RYbhuM9EcJq7vk3xs9-PP3xIqqn27ZKWuGMmPISdShmZoGLdu5Lm0Tm2swz1OmYQGHNzuE_aww4Vpw
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename=rasm.jpg"
+Content-Disposition: form-data; name="file"; filename="IMG_4970.JPG"
 
-</Users/xushnid/Documents/Java/Prog/OOP/Module/Module_5/rasm.jpg
+< /Users/xushnid/Downloads/IMG_4970.JPG
+
+
+### open attach(file)
+GET http://localhost:8080/attach/open/48e6aab7-79cb-4446-a89f-7a58378ec2f1.JPG
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpZCI6IjEwNyIsImlhdCI6MTc1Njg2MzExNiwiZXhwIjoxNzU2OTQ5NTE2fQ.IcuRXz_3RYbhuM9EcJq7vk3xs9-PP3xIqqn27ZKWuGMmPISdShmZoGLdu5Lm0Tm2swz1OmYQGHNzuE_aww4Vpw
+
+
+
+

@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer> {
     Optional<ProfileEntity> findByUsernameAndVisibleIsTrue(String username);
+
     Optional<ProfileEntity> findByIdAndVisibleIsTrue(Integer id);
 
     @Modifying
@@ -43,4 +44,9 @@ public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer
     @Transactional
     @Query("update ProfileEntity set username = ?2 where id = ?1")
     void updateUsername(Integer id, String username);
+
+    @Transactional
+    @Modifying
+    @Query("update ProfileEntity set photoId = ?2 where id = ?1")
+    void updatePhoto(Integer id, String photoId);
 }

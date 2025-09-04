@@ -53,6 +53,8 @@ public class AuthService {
     private EmailHistoryService emailHistoryService;
     @Autowired
     private EmailHistoryRepository emailHistoryRepository;
+    @Autowired
+    private AttachService attachService;
 
     // 1. REGISTRATION
     public AppResponse<String> registration(RegistrationDTO dto, AppLanguages lang) {
@@ -128,13 +130,7 @@ public class AuthService {
         if (!profile.getStatus().equals(GeneralStatus.ACTIVE)) {
             throw new AppBadException(resourceBundleService.getMessage("status.error", lang));
         }
-
-        ProfileDTO response = new ProfileDTO();
-        response.setName(profile.getName());
-        response.setUsername(profile.getUsername());
-        response.setRoleList(profileRoleRepository.getAllRolesListByProfileId(profile.getId()));
-        response.setJwt(JwtUtil.encode(profile.getUsername(), profile.getId(), response.getRoleList()));
-        return response;
+       return getLogInResponse(profile);
     }
 
     public ProfileDTO registrationSmsVerification(SmsVerificationDTO dto, AppLanguages lang) {
@@ -227,6 +223,7 @@ public class AuthService {
         ProfileDTO response = new ProfileDTO();
         response.setName(profile.getName());
         response.setUsername(profile.getUsername());
+        response.setPhoto(attachService.attachDTO(profile.getPhotoId()));
         response.setRoleList(profileRoleRepository.getAllRolesListByProfileId(profile.getId()));
         response.setJwt(JwtUtil.encode(profile.getUsername(), profile.getId(), response.getRoleList()));
         return response;
