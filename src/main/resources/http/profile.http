@@ -20,8 +20,8 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92QGdtYWlsL
 ### Profile update photo
 PUT localhost:8080/profile/photo
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpZCI6IjEwNyIsImlhdCI6MTc1Njg5MzI3MywiZXhwIjoxNzU2OTc5NjczfQ.IxrWsCclLpY5LDA4iGGAr3PstqmhL8fEZrfoqnzRZ9JpejWtydZgW2bMrBMJu-OdKHp-jiij5V0PKrilJpBljg
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpZCI6IjEwNyIsImlhdCI6MTc1NzA0Nzc4OSwiZXhwIjoxNzU3MTM0MTg5fQ.oWyxZPv2z5_1imjn1Zw7t3gtF7LEXXN9JUma1SAhABAzCTpEKvxhDa6HhqQJwCxdQ9U2_vdfOmqtUqyS_dM2gQ
 
 {
-  "photoId": "48e6aab7-79cb-4446-a89f-7a58378ec2f1.JPG"
+  "photoId": "54bdc50e-ae69-4737-a504-e1f709af0ce4.jpg"
 }

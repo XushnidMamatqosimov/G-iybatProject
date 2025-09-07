@@ -28,7 +28,8 @@ public class SpringConfig {
     public static final String[]   AUTH_WHITELIST = {
             "/v2/api-docs",
             "/auth/**",
-            "/attach/open/**"
+            "/attach/open/**",
+            "/init/all"
     };
 
     @Bean

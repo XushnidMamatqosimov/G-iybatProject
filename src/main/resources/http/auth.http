@@ -63,6 +63,16 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4bWFtYXRxb3NpbW92MjJAZ21ha
 GET http://localhost:8080/auth/registration/verification/88
 //Accept-Language: UZ
 
+### logIn as Admin
+POST localhost:8080/auth/login
+Content-Type: application/json
+Accept-Language: UZ
+
+{
+  "username": "adminjon@gmail.com",
+  "password": "1234"
+}
+
 ### login
 POST localhost:8080/auth/login
 Content-Type: application/json
