@@ -1,3 +1,4 @@
+/*
 package api.giybat.uz.controller;
 
 import api.giybat.uz.entity.ProfileEntity;
@@ -45,3 +46,4 @@ public class InitController {
 
     }
 }
+*/

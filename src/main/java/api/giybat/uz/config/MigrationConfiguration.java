@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 public class MigrationConfiguration {
     @Value("${spring.datasource.url}")
     private String dataSourceUrl;
-    @Value("${spring.datasource.username")
+    @Value("${spring.datasource.username}")
     private String dataSourceUsername;
     @Value("${spring.datasource.password}")
     private String dataSourcePassword;

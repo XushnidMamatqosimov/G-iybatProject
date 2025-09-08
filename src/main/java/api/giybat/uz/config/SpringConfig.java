@@ -29,7 +29,11 @@ public class SpringConfig {
             "/v2/api-docs",
             "/auth/**",
             "/attach/open/**",
-            "/init/all"
+            "/init/all",
+            "/v3/api-docs/**",
+            "/v3/api-docs",
+            "/swagger-ui/**",
+
     };
 
     @Bean
