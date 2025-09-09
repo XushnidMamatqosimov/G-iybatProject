@@ -5,6 +5,7 @@ import api.giybat.uz.enums.AppLanguages;
 import api.giybat.uz.enums.SmsType;
 import api.giybat.uz.exp.AppBadException;
 import api.giybat.uz.repository.SmsHistoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class SmsHistoryService {
     @Autowired
     private SmsHistoryRepository smsHistoryRepository;
@@ -46,6 +48,7 @@ public class SmsHistoryService {
         //attempt Count
         SmsHistoryEntity smsHistoryEntity = (SmsHistoryEntity) lastSmsByPhone.get();
         if (smsHistoryEntity.getAttemptCount()>=3){
+            log.warn("Attempt count limit reached: {}", phone);
             throw new AppBadException(resourceBundleService.getMessage("attempts", lang));
         }
         //check code
@@ -56,6 +59,7 @@ public class SmsHistoryService {
         // check time
         LocalDateTime expDate = smsHistoryEntity.getCreatedDate().plusMinutes(2);
         if (LocalDateTime.now().isAfter(expDate)) {
+            log.warn("Sms time is expired: {}", phone);
             throw new AppBadException(resourceBundleService.getMessage("reg.verification.failed", lang));
         }
     }

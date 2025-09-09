@@ -17,6 +17,7 @@ import api.giybat.uz.util.PhoneUtil;
 import api.giybat.uz.util.SpringSecurityUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ProfileService {
     @Autowired
@@ -64,6 +66,7 @@ public class ProfileService {
         ProfileEntity currentProfile = findById(currentUserId);
 
         if (!bCryptPasswordEncoder.matches(dto.getOldPassword(), currentProfile.getPassword())) {
+            log.warn("Wrong password profileId: {}", currentProfile);
             return new AppResponse<>(resourceBundleService.getMessage("username.password.incorrect", language));
         }
         profileRepository.changePassword(String.valueOf(currentUserId), bCryptPasswordEncoder.encode(dto.getNewPassword()));
@@ -72,6 +75,7 @@ public class ProfileService {
     }
 
     public ProfileEntity findById(Integer profileId) {
+        log.error("Profile not found by id: {}", profileId);
         return profileRepository.findById(profileId).orElseThrow(() -> new AppBadException("Profile not found"));
     }
 

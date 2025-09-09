@@ -22,6 +22,7 @@ import api.giybat.uz.util.PhoneUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.JwtException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AuthService {
     @Autowired
     private ProfileRepository profileRepository;
@@ -66,6 +68,7 @@ public class AuthService {
                 profileRepository.delete(profile);
                 /// send SMS/Email
             } else {
+                log.error("Profile already exists with this username: " + profile.getUsername());
                 throw new AppBadException(resourceBundleService.getMessage("email.phone.exists", lang));
             }
         }
@@ -114,6 +117,7 @@ public class AuthService {
         } catch (JwtException e) {
             e.printStackTrace();
         }
+        log.warn("Registration email verification failed" + token);
         throw new AppBadException(resourceBundleService.getMessage("reg.verification.failed", lang));
         //throw new AppBadException("Verification failed");
     }
@@ -121,6 +125,7 @@ public class AuthService {
     public ProfileDTO login(AuthDTO authDTO, AppLanguages lang) {
         Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleIsTrue(authDTO.getUsername());
         if (optional.isEmpty()) {
+            log.warn("Username or password incorrect: {}", authDTO.getUsername());
             throw new AppBadException(resourceBundleService.getMessage("username.password.incorrect", lang));
         }
         ProfileEntity profile = optional.get();
@@ -128,9 +133,10 @@ public class AuthService {
             throw new AppBadException(resourceBundleService.getMessage("username.password.incorrect", lang));
         }
         if (!profile.getStatus().equals(GeneralStatus.ACTIVE)) {
+            log.warn("Username wrong status: {}", profile.getUsername());
             throw new AppBadException(resourceBundleService.getMessage("status.error", lang));
         }
-       return getLogInResponse(profile);
+        return getLogInResponse(profile);
     }
 
     public ProfileDTO registrationSmsVerification(SmsVerificationDTO dto, AppLanguages lang) {
@@ -138,10 +144,12 @@ public class AuthService {
         //12345
         Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleIsTrue(dto.getPhone());
         if (optional.isEmpty()) {
+            log.warn("SMS verification failed: {}", dto.getPhone());
             throw new AppBadException(resourceBundleService.getMessage("reg.verification.failed", lang));
         }
         ProfileEntity profile = optional.get();
         if (!profile.getStatus().equals(GeneralStatus.IN_REGISTRATION)) {
+            log.warn("SMS verification failed: {}", dto.getPhone());
             throw new AppBadException(resourceBundleService.getMessage("reg.verification.failed", lang));
         }
         //code check
@@ -175,17 +183,19 @@ public class AuthService {
         // checking
         Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleIsTrue(dto.getUsername());
         if (optional.isEmpty()) {
+            log.warn("Profile not found: {}", dto.getUsername());
             throw new AppBadException(resourceBundleService.getMessage("profile.not.found", lang));
         }
         ProfileEntity profile = optional.get();
         if (!profile.getStatus().equals(GeneralStatus.ACTIVE)) {
+            log.warn("Wrong status: {}", profile.getUsername());
             throw new AppBadException(resourceBundleService.getMessage("reg.verification.failed", lang));
         }
         // send
         if (PhoneUtil.isPhone(dto.getUsername())) {
             try {
                 smsSendService.sendResetPasswordSms(dto.getUsername(), lang);
-            }catch (JsonProcessingException e) {
+            } catch (JsonProcessingException e) {
                 e.printStackTrace();
                 System.out.println("sms sending failed");
             }
@@ -200,15 +210,20 @@ public class AuthService {
     public AppResponse<String> resetPasswordConfirm(@Valid ResetPasswordConfirmDTO dto, AppLanguages lang) {
         Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleIsTrue(dto.getUsername());
         if (optional.isEmpty()) {
+            log.warn("Profile not found: {}", dto.getUsername());
             throw new AppBadException(resourceBundleService.getMessage("reg.verification.failed", lang));
         }
         ProfileEntity profile = optional.get();
         if (!profile.getStatus().equals(GeneralStatus.ACTIVE)) {
+            log.warn("Wrong status: {}", profile.getUsername());
             throw new AppBadException(resourceBundleService.getMessage("status.error", lang));
         }
-        if(PhoneUtil.isPhone(dto.getUsername())) {
+        if (PhoneUtil.isPhone(dto.getUsername())) {
+            log.warn("Wrong phone: {}", dto.getUsername());
             smsHistoryService.checkSmsTimeIsValid(dto.getUsername(), dto.getConfirmCode(), lang);
-        }if (EmailUtil.isEmail(dto.getUsername())) {
+        }
+        if (EmailUtil.isEmail(dto.getUsername())) {
+            log.warn("Wrong email: {}", dto.getUsername());
             emailHistoryService.checkEmailTimeIsValid(dto.getUsername(), dto.getConfirmCode(), lang);
         }
         // passwordni update qilish

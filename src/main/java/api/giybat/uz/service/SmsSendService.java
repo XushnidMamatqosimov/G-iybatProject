@@ -12,6 +12,7 @@ import api.giybat.uz.repository.SmsProviderTokenHolderRepository;
 import api.giybat.uz.util.RandomUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.constraints.NotBlank;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class SmsSendService {
     @Autowired
     private RestTemplate restTemplate;
@@ -72,6 +74,7 @@ public class SmsSendService {
         Long count = smsHistoryService.smsCountByPhone(phoneNumber);
         if (count >= smsLimit) {
             System.out.println("Sms Limit reached: " + phoneNumber);
+            log.warn("Sms Limit reached: phone:{}",  phoneNumber);
             throw new AppBadException("SmsLimit exceeded");
         }
         //send
@@ -104,6 +107,7 @@ public class SmsSendService {
             return response.getBody();
         } catch (RuntimeException e) {
             e.printStackTrace();
+            log.error("There is some problem with sending SMS: message: {}, phone: {}", e.getMessage(), phoneNumber);
             throw new RuntimeException("Error sending SMS");
         }
     }
@@ -159,6 +163,7 @@ public class SmsSendService {
             System.out.println(response.getData().getToken());
             return response.getData().getToken();
         } catch (RuntimeException e) {
+            log.error("Get token from provider failed: error: {}, ", e.getMessage());
             throw new RuntimeException(e);
         }
     }

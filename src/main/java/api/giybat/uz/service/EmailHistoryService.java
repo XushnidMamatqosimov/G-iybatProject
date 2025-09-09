@@ -5,12 +5,14 @@ import api.giybat.uz.enums.AppLanguages;
 import api.giybat.uz.enums.SmsType;
 import api.giybat.uz.exp.AppBadException;
 import api.giybat.uz.repository.EmailHistoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class EmailHistoryService {
     @Autowired
@@ -42,16 +44,19 @@ public class EmailHistoryService {
         LocalDateTime from = to.minusMinutes(1);
         Optional<?> lastSmsByEmail = emailHistoryRepository.findTop1ByEmailOrderByCreatedDateDesc(email);
         if (lastSmsByEmail.isEmpty()) {
+            log.warn("NO EMAIL HISTORY FOUND: {}", email);
             throw new AppBadException(resourceBundleService.getMessage("reg.verification.failed", lang));
         }
         //attempt Count
         EmailHistoryEntity emailHistoryEntity = (EmailHistoryEntity) lastSmsByEmail.get();
         if (emailHistoryEntity.getAttempts() >= attemptsCount) {
+            log.warn("Attempt count exceeded: {}", attemptsCount );
             throw new AppBadException(resourceBundleService.getMessage("attempts", lang));
         }
         //check code
         if (!emailHistoryEntity.getCode().equals(code)) {
             emailHistoryRepository.updateAttemptCount(emailHistoryEntity.getId());
+            log.warn("Code mismatch: {}", emailHistoryEntity.getCode());
             throw new AppBadException(resourceBundleService.getMessage("reg.verification.failed", lang));
         }
         // check time
